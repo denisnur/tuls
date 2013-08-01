@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean id="bbProcessor" class="com.denisn.parser.bbcodes.Processor">
+        <property name="codes">
+            <list>
+                <ref local="bbcode.ol"/>
+                <ref local="bbcode.ul"/>
+                <ref local="bbcode.text"/>
+                <ref local="bbcode.b"/>
+                <ref local="bbcode.i"/>
+                <ref local="bbcode.u"/>
+                <ref local="bbcode.h1"/>
+                <ref local="bbcode.h2"/>
+                <ref local="bbcode.url"/>
+                <ref local="bbcode.span"/>
+                <ref local="bbcode.file"/>
+                <ref local="bbcode.iurl"/>
+                <ref local="bbcode.anchor"/>
+                <ref local="bbcode.autourl"/>
+                <ref local="bbcode.autoemail"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="bbcode.text" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)([^\n$]*?)(?:$|\n)"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<p>$value</p>
+]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.b" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[b\](.*?)\[/b\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<b>$value</b>]]></value>
+        </property>
+        <property name="recursive" value="true"/>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.i" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[i\](.*?)\[/i\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<i>$value</i>]]></value>
+        </property>
+        <property name="recursive" value="true"/>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.u" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[u\](.*?)\[/u\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<u>$value</u>]]></value>
+        </property>
+        <property name="recursive" value="true"/>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.h1" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[h1\](.*?)(?:\[/h1\])+"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<h1>$value</h1>]]></value>
+        </property>
+        <property name="recursive" value="true"/>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.h2" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[h2\](.*?)(?:\[/h2\])+"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<h2>$value</h2>]]></value>
+        </property>
+        <property name="recursive" value="true"/>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.url" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[a\s+url=(.*?)\](.*?)\[/a\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<a href="$href" target="_blank">$value</a>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="href"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.span" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[span\s+height=(.*?)\](.*?)\[/span\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<span height="$height">$value</span>]]></value>
+        </property>
+        <property name="recursive" value="true"/>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="height"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.file" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[file\s+url=(.*?)\](.*?)\[/file\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<a href="$href">$value</a>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="href"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.iurl" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[token\s+url=(.*?)\](.*?)\[/token\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<a href="#$href">$value</a>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="href"/>
+                        <property name="regexp" value="(?uis)^#?(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.anchor" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[anchor\s+name=(.*?)\](.*?)\[/anchor\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<a name="$href">$value</a>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="href"/>
+                        <property name="regexp" value="(?uis)^#?(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.ul" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[(ul)\](.*?)\[/(?:ul)\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<$type>#foreach($li in $items)#if($li.length()>0)<li>$li</li>#end#end</$type>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="type"/>
+                        <property name="regexp" value="([uo][l])"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="items"/>
+                        <property name="regexp" value="(?uis)([^\n$]+)(?:\n|$)"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.ol" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)\[(ol)\](.*?)\[/(?:ol)\]"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[<$type>#foreach($li in $items)#if($li.length()>0)<li>$li</li>#end#end</$type>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="type"/>
+                        <property name="regexp" value="([uo][l])"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="items"/>
+                        <property name="regexp" value="(?uis)([^\n$]+)(?:\n|$)"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.autourl" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)(?:(&lt;p&gt;)|(?:^|[\n\s]|\())((?:(?:[\w]+?://)|(?:www\.)|(?:ftp\.))[^ \&quot;\n\r\t&lt;\)\[]*)"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[#if($paragraph)$paragraph#else #end<a href="$value" target="_blank">$value</a>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="paragraph"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bbcode.autoemail" class="com.denisn.parser.bbcodes.BBCode">
+        <property name="regexp" value="(?uis)(?:(&lt;p&gt;)|(?:^|[\n ]))((?:[a-z0-9&amp;\-_.]+?)@(?:[\w\-]+\.(?:[\w\-\.]+\.)*[\w]+))"/>
+        <property name="replaceTemplate">
+            <value><![CDATA[#if($paragraph)$paragraph#else&nbsp;#end<a href="mailto:$value">$value</a>]]></value>
+        </property>
+        <property name="attributes">
+            <map>
+                <entry key="2">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="value"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+                <entry key="1">
+                    <bean class="com.denisn.parser.bbcodes.BBAttribute">
+                        <property name="name" value="paragraph"/>
+                        <property name="regexp" value="(?uis)^(.*)$"/>
+                        <property name="group" value="1"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>
